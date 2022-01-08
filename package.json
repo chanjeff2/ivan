@@ -1,4 +1,23 @@
 {
+  "name": "ivan",
+  "description": "7toIvan",
+  "version": "1.0.0",
+  "main": "ivan.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ivan.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chanjeff2/ivan.git"
+  },
+  "author": "Jeff",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chanjeff2/ivan/issues"
+  },
+  "homepage": "https://github.com/chanjeff2/ivan#readme",
   "dependencies": {
     "discord.js": "^13.5.1"
   }
