@@ -21,6 +21,7 @@ module.exports = {
 				enable: enable
 			}
 		}, {
+			new: true,
 			upsert: true // create new doc if doesn't exist
 		})
 		await interaction.reply(`I have been ${(enable) ? "enabled" : "disabled"} in this server.`);

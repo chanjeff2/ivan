@@ -33,8 +33,11 @@ client.on("message", async (message) => {
 	const guildId = message.guildId;
 	var setting = await Settings.findOneAndUpdate({
 		guildId: guildId
-	}, null, {
-		upsert: true
+	}, {
+
+	}, {
+		upsert: true,
+		new: true
 	});
 
 	if (!setting.enable) {
