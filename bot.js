@@ -34,22 +34,23 @@ client.on("message", async (message) => {
 	if (message.mentions) {
 		return;
 	}
-	const guildId = message.guildId;
-	var setting = await Settings.findOneAndUpdate({
-		guildId: guildId
-	}, {
 
-	}, {
-		upsert: true,
-		new: true
-	});
-
-	if (!setting.enable) {
-		return;
-	}
-
-	// replace "7" with "ivan"
+	// replace "7" with "ivan" if enabled
 	if (message.content.includes("7")) {
+		const guildId = message.guildId;
+		var setting = await Settings.findOneAndUpdate({
+			guildId: guildId
+		}, {
+
+		}, {
+			upsert: true,
+			new: true
+		});
+
+		if (!setting.enable) {
+			return;
+		}
+
 		message.reply(message.content.replaceAll("7", " **Ivan** "));
 	}
 })
