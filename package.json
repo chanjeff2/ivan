@@ -2,6 +2,9 @@
   "name": "ivan",
   "description": "7toIvan",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.13.1"
+  },
   "main": "ivan.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
