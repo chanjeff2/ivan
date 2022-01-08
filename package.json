@@ -22,6 +22,7 @@
   "homepage": "https://github.com/chanjeff2/ivan#readme",
   "dependencies": {
     "@discordjs/rest": "^0.2.0-canary.0",
+    "canvas": "^2.8.0",
     "discord-api-types": "^0.26.1",
     "discord.js": "^13.5.1",
     "dotenv": "^10.0.0",
