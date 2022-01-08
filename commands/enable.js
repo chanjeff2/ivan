@@ -12,15 +12,16 @@ module.exports = {
 			.setRequired(true)
 		),
 	async execute(interaction) {
-		const guildId = interaction.guild_id;
+		const guildId = interaction.guildId;
 		const enable = interaction.options.get("enable").value;
 		await Settings.findOneAndUpdate({
 			guildId: guildId
 		}, {
-			upsert: true, // create new doc if doesn't exist
 			$set: {
 				enable: enable
 			}
+		}, {
+			upsert: true // create new doc if doesn't exist
 		})
 		await interaction.reply(`I have been ${(enable) ? "enabled" : "disabled"} in this server.`);
 	},

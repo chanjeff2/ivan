@@ -4,6 +4,7 @@ const { Routes } = require('discord-api-types/v9');
 const dotenv = require('dotenv');
 const fs = require('fs');
 const mongoose = require('mongoose');
+const Settings = require("./models/setting");
 
 // load .env
 dotenv.config();
@@ -24,11 +25,22 @@ client.on("ready", () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 })
 
-client.on("message", (message) => {
+client.on("message", async (message) => {
 	// prevent self loop
 	if (message.author == client.user) {
 		return;
 	}
+	const guildId = message.guildId;
+	var setting = await Settings.findOneAndUpdate({
+		guildId: guildId
+	}, null, {
+		upsert: true
+	});
+
+	if (!setting.enable) {
+		return;
+	}
+
 	// replace "7" with "ivan"
 	if (message.content.includes("7")) {
 		message.reply(message.content.replaceAll("7", " **Ivan** "));
