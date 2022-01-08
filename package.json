@@ -3,7 +3,6 @@
   "description": "7toIvan",
   "version": "1.0.0",
   "main": "ivan.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ivan.js"
@@ -19,6 +18,7 @@
   },
   "homepage": "https://github.com/chanjeff2/ivan#readme",
   "dependencies": {
-    "discord.js": "^13.5.1"
+    "discord.js": "^13.5.1",
+    "dotenv": "^10.0.0"
   }
 }

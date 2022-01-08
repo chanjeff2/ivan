@@ -1,4 +1,3 @@
-const config = require("./config.json");
 const { Client, Intents } = require("discord.js");
 
 // create client
@@ -20,4 +19,4 @@ client.on("message", (message) => {
     }
 })
 
-client.login(config.token);
+client.login(process.env.TOKEN);
