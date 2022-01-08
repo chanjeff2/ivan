@@ -5,10 +5,10 @@
   "engines": {
     "node": "16.13.1"
   },
-  "main": "ivan.js",
+  "main": "bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ivan.js"
+    "start": "node bot.js"
   },
   "repository": {
     "type": "git",
