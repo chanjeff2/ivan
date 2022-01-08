@@ -1,24 +1,63 @@
-const { Client, Intents } = require("discord.js");
+const { Client, Collection, Intents } = require("discord.js");
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
 const dotenv = require('dotenv');
+const fs = require('fs');
+const mongoose = require('mongoose');
+
+// load .env
 dotenv.config();
+
+// connect mongodb
+const url = process.env.MONGODB_URI;
+const connect = mongoose.connect(url);
+
+connect.then((db) => {
+	console.log("Connected correctly to server");
+}, (err) => { console.log(err); });
 
 // create client
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 
 // on bot ready/started
 client.on("ready", () => {
-    console.log(`Logged in as ${client.user.tag}!`);
+	console.log(`Logged in as ${client.user.tag}!`);
 })
 
 client.on("message", (message) => {
-    // prevent self loop
-    if (message.author == client.user) {
-        return;
-    }
-    // replace "7" with "ivan"
-    if (message.content.includes("7")) {
-        message.reply(message.content.replaceAll("7", " **Ivan** "));
-    }
+	// prevent self loop
+	if (message.author == client.user) {
+		return;
+	}
+	// replace "7" with "ivan"
+	if (message.content.includes("7")) {
+		message.reply(message.content.replaceAll("7", " **Ivan** "));
+	}
 })
 
-client.login(process.env.TOKEN);
+// slash commands
+client.commands = new Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.data.name, command);
+}
+
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isCommand()) return;
+
+	const command = client.commands.get(interaction.commandName);
+
+	if (!command) return;
+
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+	}
+});
+
+const token = process.env.TOKEN;
+client.login(token);
