@@ -30,6 +30,10 @@ client.on("message", async (message) => {
 	if (message.author == client.user) {
 		return;
 	}
+	// ignore mention
+	if (message.mentions) {
+		return;
+	}
 	const guildId = message.guildId;
 	var setting = await Settings.findOneAndUpdate({
 		guildId: guildId
