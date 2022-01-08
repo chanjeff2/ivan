@@ -22,7 +22,7 @@ module.exports = {
         const canvas = createCanvas(happyCornerPic.naturalWidth, happyCornerPic.naturalHeight);
         const ctx = canvas.getContext('2d')
         ctx.drawImage(happyCornerPic, 0, 0);
-        ctx.drawImage(avatar, 255, 65);
+        ctx.drawImage(avatar, 255, 65, 100, 100);
 
         const img = canvas.toBuffer();
         const file = new MessageAttachment(img, "file.png");
