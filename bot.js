@@ -31,7 +31,7 @@ client.on("message", async (message) => {
 		return;
 	}
 	// ignore user/channel mentions
-	if (message.content.match(/<@(!|&)?(\d+)>/) || message.content.match(/<#(\d+)>/)) {
+	if (message.content.match(/<@(!|&)?(\d+)>|<#(\d+)>/)) {
 		return;
 	}
 
