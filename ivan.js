@@ -16,7 +16,7 @@ client.on("message", (message) => {
         return;
     }
     // replace "7" with "ivan"
-    if (message.content.contains("7")) {
+    if (message.content.includes("7")) {
         message.reply(message.content.replace("7", " **Ivan** "));
     }
 })
