@@ -31,7 +31,7 @@ client.on("message", async (message) => {
 		return;
 	}
 	// ignore mention
-	if (message.mentions) {
+	if (message.mentions.users.size > 0) {
 		return;
 	}
 
