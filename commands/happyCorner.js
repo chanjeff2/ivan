@@ -17,7 +17,7 @@ module.exports = {
 		const target = interaction.options.getUser("user");
         
         const happyCornerPic = await loadImage(happyCornerPicURL);
-        const avatar = await loadImage(`${target.avatarURL({ format: "jpg" })}?size=100`);
+        const avatar = await loadImage(`${target.displayAvatarURL({ format: "jpg" })}?size=100`);
 
         const canvas = createCanvas(happyCornerPic.naturalWidth, happyCornerPic.naturalHeight);
         const ctx = canvas.getContext('2d')
