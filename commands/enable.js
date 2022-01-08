@@ -13,7 +13,7 @@ module.exports = {
 		),
 	async execute(interaction) {
 		const guildId = interaction.guildId;
-		const enable = interaction.options.get("enable").value;
+		const enable = interaction.options.getBoolean("enable");
 		await Settings.findOneAndUpdate({
 			guildId: guildId
 		}, {

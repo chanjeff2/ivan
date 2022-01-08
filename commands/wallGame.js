@@ -12,7 +12,7 @@ module.exports = {
 			.setRequired(true)
 		),
 	async execute(interaction) {
-		const target = interaction.options.get("user").value;
-		await interaction.reply(`I am playing wall game against <@${target}>.`);
+		const target = interaction.options.getUser("user");
+		await interaction.reply(`I am playing wall game against ${target}.`);
 	},
 };
