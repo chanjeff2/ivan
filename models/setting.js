@@ -10,6 +10,10 @@ const SettingSchema = new Schema({
 	enable: {
 		type: Boolean,
 		default: true
+	},
+	burgers: {
+		type: Number,
+		default: 1
 	}
 }, {
 	timestamps: true
