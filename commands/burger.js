@@ -58,15 +58,6 @@ module.exports = {
 			await interaction.reply({content: ":hamburger: I have forfeited all hamburgers in the server and bought one from McDonalds!"});
 		}
 		if (interaction.options.getSubcommand() === 'status') {
-			var setting = await Settings.findOneAndUpdate({
-				guildId: guildId
-			}, {
-	
-			}, {
-				upsert: true,
-				new: true
-			});
-			const count = setting.burgers;
 			await interaction.reply({content: `:hamburger: There are **${currentCount}** burgers available.`});
 		}
 		if (interaction.options.getSubcommand() === 'clone') {
