@@ -56,8 +56,7 @@ module.exports = {
         const file = new MessageAttachment(img, "file.png");
         await interaction.reply({ files: [file] });
         if (target.id === process.env.CLIENT_ID) {
-            const lineToSpeak = sayRandomThings(interaction.user.name);
-            console.log(lineToSpeak);
+            const lineToSpeak = sayRandomThings(interaction.user.username);
             await interaction.user.send(lineToSpeak);
         }
     },
