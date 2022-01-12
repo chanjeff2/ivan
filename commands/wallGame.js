@@ -6,34 +6,53 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('wall-game')
 		.setDescription('wall game against someone')
-		.addUserOption((option) =>
-			option
-			.setName("user")
-			.setDescription("who you want to fu*k")
-			.setRequired(true)
-		),
+		.addSubcommand(subcommand => 
+			subcommand
+			.setName('play')
+			.setDescription('Play wall game')
+			.addUserOption((option) =>
+				option
+				.setName("user")
+				.setDescription("who you want to fu*k")
+				.setRequired(true)))
+		.addSubcommand(subcommand => 
+			subcommand
+			.setName('reset')
+			.setDescription('Resets wall game in if there are any crashes.')),
 	async execute(interaction) {
 		const guildId = interaction.guildId;
-		const channel = interaction.member.guild.channels.cache.get(interaction.channelId);
-		// Initialize the game
-		let wallGameStats = await WallGameStats.findOneAndUpdate({ guildId: guildId }, {}, { new: true, upsert: true });
-		const isPlaying = wallGameStats.isPlaying;
-		if (!isPlaying) {
+		if (interaction.options.getSubcommand() === 'reset') {
 			await WallGameStats.findOneAndUpdate({
 				guildId: guildId
 			}, {
 				$set: {
-					playersJoined: 0,
-					score: 0,
-					isPlaying: true,
+					isPlaying: false,
 				}
 			}, {
 				new: true,
 				upsert: true
-			});
-			
-			// Catches any game crashes, to prevent locking further plays.
-			try {
+			})
+			await interaction.reply("Wall game has been reset.");
+		}
+		if (interaction.options.getSubcommand() === 'play') {
+			const channel = interaction.member.guild.channels.cache.get(interaction.channelId);
+			// Initialize the game
+			let wallGameStats = await WallGameStats.findOneAndUpdate({ guildId: guildId }, {}, { new: true, upsert: true });
+			const isPlaying = wallGameStats.isPlaying;
+			if (!isPlaying) {
+				await WallGameStats.findOneAndUpdate({
+					guildId: guildId
+				}, {
+					$set: {
+						playersJoined: 0,
+						score: 0,
+						isPlaying: true,
+					}
+				}, {
+					new: true,
+					upsert: true
+				});
+				
 				const target = interaction.options.getUser("user");
 				const targetName = target.username;
 				const peititonMaker = interaction.user.username;
@@ -61,6 +80,9 @@ module.exports = {
 					
 					collector.on('collect', async (i) => {
 						i.deferUpdate();
+						if (i.user === target) {
+							return; // You can't wall yourself
+						}
 						const currentStats = await WallGameStats.findOneAndUpdate({ guildId: guildId }, {}, { new: true, upsert: true })
 						const currentTimesWalled = currentStats.score + 1;
 						await WallGameStats.findOneAndUpdate({
@@ -123,20 +145,9 @@ module.exports = {
 						});
 					});
 				});
-			} catch (e) {
-				await WallGameStats.findOneAndUpdate({
-					guildId: guildId
-				}, {
-					$set: {
-						isPlaying: false,
-					}
-				}, {
-					new: true,
-					upsert: true
-				});
+			} else {
+				await interaction.reply({ content: "Please wait for the current wall game ends!" })
 			}
-		} else {
-			await interaction.reply({ content: "Please wait for the current wall game ends!" })
 		}
 	},
 };
