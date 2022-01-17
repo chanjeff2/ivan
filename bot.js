@@ -35,6 +35,11 @@ client.on("message", async (message) => {
 		return;
 	}
 
+	// ignore links
+	if (message.embeds.length > 0) {
+		return;
+	}
+
 	// replace "7" with "ivan" if enabled
 	if (message.content.includes("7")) {
 		const guildId = message.guildId;
