@@ -12,9 +12,15 @@ module.exports = {
 			.setName("title")
 			.setDescription("the title of the news")
 			.setRequired(true)
-		),
+		)
+        .addUserOption((option) => 
+            option
+            .setName("user")
+            .setDescription("The user you want to add as picture of the news")
+        ),
     async execute(interaction) {
         const title = interaction.options.getString("title").toUpperCase();
+        const user = interaction.options.getUser("user");
 
         const newspaper = await loadImage(newsPicURL);
 
@@ -25,10 +31,17 @@ module.exports = {
 
         do {
             ctx.font = `bold ${fontSize -= 4}px arial`;
-        } while (ctx.measureText(title).width > canvas.width - 70);
+        } while (ctx.measureText(title).width > canvas.width - 70 && fontSize >= 48);
+
         ctx.fillStyle = '#535353';
         const centerLoc = (canvas.width/2 - ctx.measureText(title).width/2)
         ctx.fillText(title, centerLoc, 290);
+
+        // Add avatar if there are user mentioned
+        if (user) {
+            const avatar = await loadImage(`${user.displayAvatarURL({ format: "jpg" })}?size=100`);
+            ctx.drawImage(avatar, 515, 375, 350, 350);
+        }
 
         const img = canvas.toBuffer();
         const file = new MessageAttachment(img, "file.png");
