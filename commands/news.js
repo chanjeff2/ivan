@@ -17,10 +17,16 @@ module.exports = {
             option
             .setName("user")
             .setDescription("The user you want to add as picture of the news")
-        ),
+        )
+        .addStringOption((option) =>
+			option
+			.setName("image-link")
+			.setDescription("the link of image. Discord attachment link is recommended (Has higher priority than user icon)")
+		),
     async execute(interaction) {
         const title = interaction.options.getString("title").toUpperCase();
         const user = interaction.options.getUser("user");
+        const link = interaction.options.getString("image-link");
 
         const newspaper = await loadImage(newsPicURL);
 
@@ -37,8 +43,11 @@ module.exports = {
         const centerLoc = (canvas.width/2 - ctx.measureText(title).width/2)
         ctx.fillText(title, centerLoc, 290);
 
-        // Add avatar if there are user mentioned
-        if (user) {
+        
+        if (link && (link.endsWith("jpg") || link.endsWith("png"))) { // Add image if there are images required, png or jpg
+            const image = await loadImage(link);
+            ctx.drawImage(image, 435, 360, 510, 382);
+        } else if (user) { // Add avatar if there are user mentioned
             const avatar = await loadImage(`${user.displayAvatarURL({ format: "jpg" })}?size=100`);
             ctx.drawImage(avatar, 515, 375, 350, 350);
         }
