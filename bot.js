@@ -18,7 +18,7 @@ connect.then((db) => {
 }, (err) => { console.log(err); });
 
 // create client
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 // on bot ready/started
 client.on("ready", () => {
@@ -40,25 +40,42 @@ client.on("message", async (message) => {
 		return;
 	}
 
+	const guildId = message.guildId;
+
+	// question mark
+	if (message.content.match(/^[?？]+$/)) {
+		let isEnable = await isEnableInServer(guildId);
+
+		if (!isEnable) {
+			return;
+		}
+
+		message.reply({ files: ["https://cdn.discordapp.com/attachments/817750237614440488/935936964195156039/2Q.png"] });
+	}
+
 	// replace "7" with "ivan" if enabled
 	if (message.content.includes("7")) {
-		const guildId = message.guildId;
-		var setting = await Settings.findOneAndUpdate({
-			guildId: guildId
-		}, {
+		let isEnable = await isEnableInServer(guildId);
 
-		}, {
-			upsert: true,
-			new: true
-		});
-
-		if (!setting.enable) {
+		if (!isEnable) {
 			return;
 		}
 
 		message.reply(message.content.replaceAll("7", " **Ivan** "));
 	}
 })
+
+async function isEnableInServer(guildId) {
+	var setting = await Settings.findOneAndUpdate({
+		guildId: guildId
+	}, {
+
+	}, {
+		upsert: true,
+		new: true
+	});
+	return setting.enable;
+}
 
 // slash commands
 client.commands = new Collection();
