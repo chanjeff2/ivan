@@ -36,7 +36,7 @@ client.on("message", async (message) => {
 	}
 
 	// ignore links
-	if (message.embeds.length > 0) {
+	if (message.content.match(/https?:\/\/[^\s]*/)) {
 		return;
 	}
 
