@@ -30,8 +30,8 @@ client.on("message", async (message) => {
 	if (message.author == client.user) {
 		return;
 	}
-	// ignore user/channel mentions
-	if (message.content.match(/<@(!|&)?(\d+)>|<#(\d+)>/)) {
+	// ignore user/channel mentions/custom emojis
+	if (message.content.match(/<@(!|&)?(\d+)>|<#(\d+)>|<:.*:(\d+)>/)) {
 		return;
 	}
 
