@@ -18,7 +18,7 @@ module.exports = {
 		.addSubcommand(subcommand => 
 			subcommand
 			.setName('reset')
-			.setDescription('Resets wall game in if there are any crashes.')),
+			.setDescription('Resets wall game in case if there are any crashes.')),
 	async execute(interaction) {
 		const guildId = interaction.guildId;
 		if (interaction.options.getSubcommand() === 'reset') {
