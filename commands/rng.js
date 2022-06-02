@@ -18,6 +18,7 @@ module.exports = {
 
     if (!(Number.isInteger(maxNum) && maxNum > 1)) {
       await interaction.reply({ content: "Please make sure your n is an integer greater than 1."});
+      return;
     }
 
     const rolled = Math.floor(Math.random() * maxNum) + 1;
